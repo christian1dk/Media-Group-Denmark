@@ -15,7 +15,11 @@ switch ($request) {
         break;
     
     case '/api/jobs':
-        require __DIR__ . '/api/jobs.php';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            require __DIR__ . '/api/job-create.php';
+        } else {
+            require __DIR__ . '/api/jobs.php';
+        }
         break;
     
     case (preg_match('#^/api/jobs/([0-9]+)$#', $request, $matches) ? true : false):

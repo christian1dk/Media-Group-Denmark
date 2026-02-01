@@ -146,6 +146,31 @@ class Job {
             'limit' => $limit
         ];
     }
+    public function createJob($data) {
+        $sql = "INSERT INTO job_postings (title, description, company, location, job_type, is_remote) 
+                VALUES (?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $this->conn->prepare($sql);
+        
+        // Konverter is_remote til integer (0 eller 1)
+        $isRemote = isset($data['is_remote']) ? (int)$data['is_remote'] : 0;
+        
+        $stmt->bind_param("sssssi", 
+            $data['title'], 
+            $data['description'], 
+            $data['company'], 
+            $data['location'], 
+            $data['job_type'], 
+            $isRemote
+        );
+
+        if ($stmt->execute()) {
+            return $this->conn->insert_id;
+        }
+
+        return false;
+    }
+
     public function getJobById($id) {
         $fields = implode(", ", $this->allowedFields);
         $sql = "SELECT $fields FROM job_postings WHERE id = ?";
