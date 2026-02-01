@@ -13,6 +13,10 @@ switch ($request) {
     case '/index.php':
         require __DIR__ . '/index.php';
         break;
+    
+    case '/api/jobs':
+        require __DIR__ . '/api/jobs.php';
+        break;
 
     default:
         http_response_code(404);
