@@ -17,6 +17,11 @@ switch ($request) {
     case '/api/jobs':
         require __DIR__ . '/api/jobs.php';
         break;
+    
+    case (preg_match('#^/api/jobs/([0-9]+)$#', $request, $matches) ? true : false):
+        $jobId = $matches[1];
+        require __DIR__ . '/api/job-detail.php';
+        break;
 
     default:
         http_response_code(404);

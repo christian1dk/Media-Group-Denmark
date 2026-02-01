@@ -146,5 +146,21 @@ class Job {
             'limit' => $limit
         ];
     }
+    public function getJobById($id) {
+        $fields = implode(", ", $this->allowedFields);
+        $sql = "SELECT $fields FROM job_postings WHERE id = ?";
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $row['is_remote'] = (bool)$row['is_remote'];
+            return $row;
+        }
+
+        return null;
+    }
 }
 ?>
